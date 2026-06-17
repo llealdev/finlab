@@ -12,6 +12,8 @@ dependencies = [
     "pydantic-settings>=2.14.1",
     "python-dotenv>=1.2.2",
     "qdrant-client[fastembed]>=1.18.0",
+    "trafilatura>=2.1.0",
     "transformers>=5.12.1",
     "uvicorn>=0.49.0",
+    "yfinance>=1.4.1",
 ]
