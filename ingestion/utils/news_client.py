@@ -12,7 +12,7 @@ class NewsClint:
 
         for item in news[:max_stories]:
             content = item.get("content", {})
-            content_type = item.get("contentType")
+            content_type = content.get("contentType")
 
             if content_type != "STORY":
                 continue
@@ -38,4 +38,4 @@ class NewsClint:
                 }
                 news_data.append({"text": text_content, "metadata": metadata})
 
-            return news_data
+        return news_data

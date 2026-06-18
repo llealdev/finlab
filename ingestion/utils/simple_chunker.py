@@ -21,7 +21,7 @@ class SimpleChunker:
             para_tokens = len(self.tokenizer.encode(para, add_special_tokens=False))
 
             if current_tokens + para_tokens > self.max_tokens and current_chunk:
-                chunks.append("\n\n".join(current_tokens))
+                chunks.append("\n\n".join(current_chunk))
                 current_chunk = [para]
                 current_tokens = para_tokens
 
@@ -31,4 +31,5 @@ class SimpleChunker:
 
         if current_chunk:
             chunks.append("\n\n".join(current_chunk))
+
         return chunks

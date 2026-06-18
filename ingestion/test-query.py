@@ -25,8 +25,24 @@ query_dense = list(dense_model.query_embed([query_text]))[0].tolist()
 query_sparse = list(sparse_model.query_embed([query_text]))[0].as_object()
 query_colbert = list(colbert_model.query_embed([query_text]))[0].tolist()
 
+source_filter = models.Filter(
+    must=[
+        models.FieldCondition(
+            key="source.source",
+            match=models.MatchValue(value="yahoo_finance"),
+        )
+    ]
+)
+
+qdrant.create_payload_index(
+    collection_name=COLLECTION_NAME,
+    field_name="source.source",
+    field_schema=models.PayloadSchemaType.KEYWORD,
+)
+
 results = qdrant.query_points(
     collection_name=COLLECTION_NAME,
+    query_filter=source_filter,
     prefetch=[
         {
             "prefetch": [

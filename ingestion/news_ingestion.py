@@ -1,11 +1,10 @@
 import os
 import uuid
-
-from dotenv import load_dotenv
-from qdrant_client import QdrantClient, models
 from fastembed import TextEmbedding, SparseTextEmbedding, LateInteractionTextEmbedding
-from utils.semantic_chunker import SemanticChunker
-from utils.edgar_clinet import EdgarClient
+from qdrant_client import QdrantClient, models
+from utils.simple_chunker import SimpleChunker
+from utils.news_client import NewsClint
+from dotenv import load_dotenv
 
 load_dotenv()
 
@@ -13,7 +12,6 @@ DENSE_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
 SPARSE_MODEL = "Qdrant/bm25"
 COLBERT_MODEL = "colbert-ir/colbertv2.0"
 COLLECTION_NAME = "financial"
-EMAIL = "lleal.dev@gmail.com"
 MAX_TOKENS = 300
 
 qdrant = QdrantClient(
@@ -21,24 +19,21 @@ qdrant = QdrantClient(
     url=os.getenv("QDRANT_URL"),
 )
 
-edgar = EdgarClient(email=EMAIL)
-data_10k = edgar.fetch_filing_data("AAPL", "10-K")
-text_10k = edgar.get_combined_text(data_10k)
+new_client = NewsClint()
+news_data = new_client.fetch_news("AAPL", max_stories=10)
 
-data_10q = edgar.fetch_filing_data("AAPL", "10-Q")
-text_10q = edgar.get_combined_text(data_10q)
-
-chunker = SemanticChunker(max_tokens=MAX_TOKENS)
+chunker = SimpleChunker(max_tokens=MAX_TOKENS)
 
 all_chunks = []
-for data, text in [(data_10k, text_10k), (data_10q, text_10q)]:
-    chunks = chunker.create_chunks(text)
+for article in news_data:
+    chunks = chunker.create_chunker(article["text"])
     for chunk in chunks:
-        all_chunks.append({"text": chunk, "metadata": data["metadata"]})
+        all_chunks.append({"text": chunk, "metadata": article["metadata"]})
 
-dense_model = TextEmbedding(model_name=DENSE_MODEL)
-sparse_model = SparseTextEmbedding(model_name=SPARSE_MODEL)
-colbert_model = LateInteractionTextEmbedding(model_name=COLBERT_MODEL)
+dense_model = TextEmbedding(DENSE_MODEL)
+sparse_model = SparseTextEmbedding(SPARSE_MODEL)
+colbert_model = LateInteractionTextEmbedding(COLBERT_MODEL)
+
 
 points = []
 for chunk_data in all_chunks:
@@ -58,7 +53,6 @@ for chunk_data in all_chunks:
         },
         payload={"text": chunk, "source": metadata},
     )
-
     points.append(point)
 
 qdrant.upload_points(collection_name=COLLECTION_NAME, points=points, batch_size=5)
