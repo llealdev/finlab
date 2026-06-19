@@ -14,9 +14,9 @@ class Settings(BaseSettings):
     dense_model: str = "sentence-transformers/all-MiniLM-L6-v2"
     sparse_model: str = "Qdrant/bm25"
     colbert_model: str = "colbert-ir/colbertv2.0"
-    base_url_api_llm: str = "https://api.groq.com/openai/v1"
-    groq_api_key: str
-    groq_model: str = "llama-3.1-8b-instant"
+    base_url_api_llm: str = "https://opencode.ai/zen/v1/"
+    llm_api_key: str
+    llm_model: str = "mimo-v2.5-free"
 
 
 settings = Settings()

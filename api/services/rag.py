@@ -9,7 +9,7 @@ class RAGService:
     def __init__(self, search_service: SearchService):
         self.search_service = search_service
         self.client = OpenAI(
-            base_url=settings.base_url_api_llm, api_key=settings.groq_api_key
+            base_url=settings.base_url_api_llm, api_key=settings.llm_api_key
         )
 
     def generate_answer(self, query: str, limit: int = 3):
@@ -20,7 +20,7 @@ class RAGService:
         prompt = RAG_PROMPT.format(context=context, query=query)
 
         response = self.client.responses.create(
-            model=settings.groq_model,
+            model=settings.llm_model,
             input=prompt,
             temperature=0,
             top_p=1,
