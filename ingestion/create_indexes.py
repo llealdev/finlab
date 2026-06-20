@@ -12,9 +12,9 @@ qdrant = QdrantClient(
 )
 
 fields_to_indexs = [
-    "metadata.ticker",
-    "metadata.form_type",
-    "metadata.source",
+    "source.ticker",
+    "source.form_type",
+    "source.source",
 ]
 
 for field_name in fields_to_indexs:
