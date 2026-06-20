@@ -38,11 +38,12 @@ class FinalRecommendation(BaseModel):
 
 
 class AgentRequest(BaseModel):
-    ticker: str
+    query: str
     limit: int = 3
 
 
 class AgentResponse(BaseModel):
+    query: str
     ticker: str
     fundamental_analysis: FundamentalAnalysis
     momentum_analysis: MomentumAnalysis

@@ -20,6 +20,7 @@ from models.agent import (
 )
 
 from services.search import SearchService
+from services.ticker_extractor import TickerExtractor
 
 
 class AgentServices:
@@ -29,6 +30,7 @@ class AgentServices:
             base_url=settings.base_url_api_llm, api_key=settings.llm_api_key
         )
         self.client = instructor.from_openai(client=client, model=instructor.Mode.JSON)
+        self.ticker_extractor = TickerExtractor()
 
     def _run_queries(self, queries: list[str], limit: int, filter: dict = None):
         all_results = []
@@ -73,7 +75,12 @@ class AgentServices:
             prompt=prompt, response_model=SentimentAnalysis
         )
 
-    async def analyze(self, ticker: str, limit: int = 3):
+    async def analyze(self, query: str, limit: int = 3):
+        ticker = self.ticker_extractor.extract_ticker(query=query)
+
+        if not ticker:
+            raise ValueError("Could not extract a valid ticker symbol from the query")
+
         fundamental_task = self._analyze_fundamental(ticker=ticker, limit=limit)
         momentum_task = self._analyze_momentum(ticker=ticker, limit=limit)
         sentiment_task = self._analyze_sentiment(ticker=ticker, limit=limit)
@@ -95,6 +102,7 @@ class AgentServices:
         )
 
         return AgentResponse(
+            query=query,
             ticker=ticker,
             fundamental_analysis=fundamental_analysis,
             momentum_analysis=momentum_analysis,

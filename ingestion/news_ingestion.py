@@ -20,7 +20,7 @@ qdrant = QdrantClient(
 )
 
 new_client = NewsClint()
-news_data = new_client.fetch_news("AAPL", max_stories=10)
+news_data = new_client.fetch_news("IBM", max_stories=10)
 
 chunker = SimpleChunker(max_tokens=MAX_TOKENS)
 
