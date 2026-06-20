@@ -19,9 +19,9 @@ class RAGService:
 
         prompt = RAG_PROMPT.format(context=context, query=query)
 
-        response = self.client.responses.create(
+        response = self.client.chat.completions.create(
             model=settings.llm_model,
-            input=prompt,
+            messages=[{"role": "user", "content": prompt}],
             temperature=0,
             top_p=1,
         )
@@ -36,6 +36,6 @@ class RAGService:
 
         return RAGResponse(
             query=query,
-            answer=response.output_text,
+            answer=response.choices[0].message.content,
             metadata=metadata,
         )
