@@ -1,0 +1,6 @@
+{
+    "query": "What's the weather like today?",
+    "expected_ticker": null,
+    "test_type": "no_company",
+    "description": "Query with no company mentioned = should return None"
+}

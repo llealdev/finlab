@@ -1,0 +1,6 @@
+{
+    "query": "How is Apple doing today?",
+    "expected_ticker": "AAPL",
+    "test_type": "static_mapping",
+    "description": "Simple query mentioning Apple - should use static mapping"
+}

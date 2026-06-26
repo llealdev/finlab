@@ -1,0 +1,6 @@
+{
+    "query": "Tell me about IBM",
+    "expected_ticker": "IBM",
+    "test_type": "llm_fallback",
+    "description": "IBM is not in static mapping - should use LLM fallback"
+}

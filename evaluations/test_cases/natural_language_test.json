@@ -1,0 +1,6 @@
+{
+    "query": "Should I invest in Apple stock right now?",
+    "expected_ticker": "AAPL",
+    "test_type": "natural_language",
+    "description": "Natural language investment question - should extract AAPL"
+}
