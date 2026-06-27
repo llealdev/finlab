@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "validators": {
+    "guardrails/profanity_free": {
+      "import_path": "guardrails_grhub_profanity_free",
+      "exports": [
+        "ProfanityFree"
+      ],
+      "installed_at": "2026-06-27T18:10:31.027769+00:00",
+      "package_name": "guardrails-grhub-profanity-free"
+    }
+  }
+}
