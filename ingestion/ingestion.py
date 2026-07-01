@@ -9,12 +9,12 @@ from utils.edgar_clinet import EdgarClient
 
 load_dotenv()
 
-DENSE_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
+DENSE_MODEL = "intfloat/multilingual-e5-large"
 SPARSE_MODEL = "Qdrant/bm25"
 COLBERT_MODEL = "colbert-ir/colbertv2.0"
 COLLECTION_NAME = "financial"
 EMAIL = "lleal.dev@gmail.com"
-MAX_TOKENS = 300
+MAX_TOKENS = 500
 
 qdrant = QdrantClient(
     api_key=os.getenv("QDRANT_API_KEY"),
@@ -22,10 +22,10 @@ qdrant = QdrantClient(
 )
 
 edgar = EdgarClient(email=EMAIL)
-data_10k = edgar.fetch_filing_data("IBM", "10-K")
+data_10k = edgar.fetch_filing_data("AAPL", "10-K")
 text_10k = edgar.get_combined_text(data_10k)
 
-data_10q = edgar.fetch_filing_data("IBM", "10-Q")
+data_10q = edgar.fetch_filing_data("AAPL", "10-Q")
 text_10q = edgar.get_combined_text(data_10q)
 
 chunker = SemanticChunker(max_tokens=MAX_TOKENS)
