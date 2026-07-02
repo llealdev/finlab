@@ -22,10 +22,10 @@ qdrant = QdrantClient(
 )
 
 edgar = EdgarClient(email=EMAIL)
-data_10k = edgar.fetch_filing_data("AAPL", "10-K")
+data_10k = edgar.fetch_filing_data("MSFT", "10-K")
 text_10k = edgar.get_combined_text(data_10k)
 
-data_10q = edgar.fetch_filing_data("AAPL", "10-Q")
+data_10q = edgar.fetch_filing_data("MSFT", "10-Q")
 text_10q = edgar.get_combined_text(data_10q)
 
 chunker = SemanticChunker(max_tokens=MAX_TOKENS)
