@@ -23,7 +23,7 @@ class FundamentalAnalysisEvaluation(BaseModel):
 
 FUNDAMENTAL_EVAL_PROMPT = """ You are a expert financial analyst evaluating the quality of a fundamental analysis.
 
-INPUT (User Query): 
+INPUT (User Query):
 {input}:
 
 OUTPUT (Analysis Generated):
@@ -40,7 +40,7 @@ Evaluate this fundamental analysis based on:
 4. Is the recommendation logical given the analysis?
 5. Does the confidence score make sense?
 
-Provide: 
+Provide:
 - score: 0.0 to 1.0 (1.0 = excellent analysis, 0.0 = poor analysis)
 - reasoning: Brief explanation of your evaluation
 - pass_fail: "pass" if score >=0.7, otherwise "fail"
@@ -61,14 +61,12 @@ def evaluate_fundamental_analysis(trace_data: dict) -> FundamentalAnalysisEvalua
         recommendation=fundamental.get("recommendation", ""),
     )
 
-    response = client.chat.completions.create(
+    return client.chat.completions.create(
         model="deepseek-v4-flash-free",
         messages=[{"role": "user", "content": prompt}],
         temperature=0,
         response_model=FundamentalAnalysisEvaluation,
     )
-
-    return response
 
 
 def evaluate_recommendation_quality(trace_data: dict) -> FundamentalAnalysisEvaluation:
@@ -96,14 +94,12 @@ def evaluate_recommendation_quality(trace_data: dict) -> FundamentalAnalysisEval
     - pass_fail: "pass" if score >= 0.7, otherwise "fail"
     """
 
-    response = client.chat.completions.create(
+    return client.chat.completions.create(
         model="deepseek-v4-flash-free",
         messages=[{"role": "user", "content": prompt}],
         temperature=0,
         response_model=FundamentalAnalysisEvaluation,
     )
-
-    return response
 
 
 def run_llm_as_judge_evaluations():
