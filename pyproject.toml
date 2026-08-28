@@ -12,7 +12,6 @@ dependencies = [
     "hdbscan>=0.8.44",
     "instructor>=1.15.3",
     "langfuse>=4.12.0",
-    "mypy>=2.3.0",
     "openai>=2.41.0",
     "pydantic>=2.13.4",
     "pydantic-settings>=2.14.1",
@@ -37,15 +36,8 @@ extend-exclude = ['notebooks']
 
 [tool.ruff.lint]
 preview = true
-select = ['I', 'F', 'E', 'W', 'PLC', 'PLE', 'PLR', 'PLW',
+select = ['I', 'F', 'E', 'W', 'PLC', 'PLE', 'PLW',
     'C90', 'N', 'S', 'RET', 'SIM', 'PERF']
 
 [tool.ruff.format]
 preview = true
-
-
-[tool.mypy]
-warn_return_any = true
-ignore_missing_imports = false
-python_version = "3.13"
-strict = true

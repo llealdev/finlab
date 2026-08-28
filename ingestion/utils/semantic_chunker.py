@@ -7,6 +7,8 @@ from transformers import AutoTokenizer
 
 warnings.simplefilter(action="ignore", category=FutureWarning)
 
+PARAGRAHS_SPLIT = 10
+
 
 class SemanticChunker:
     def __init__(
@@ -23,7 +25,11 @@ class SemanticChunker:
         self.max_tokens = max_tokens
         self.tokenizer = AutoTokenizer.from_pretrained(model_name)
 
-    def _cluster_and_process(self, texts, min_size):
+    def _cluster_and_process(
+        self,
+        texts: list[str],
+        min_size: int,
+    ) -> tuple[list[str], list[str]]:
         if len(texts) <= 1:
             return texts, texts if len(texts) == 1 else []
 
@@ -65,8 +71,8 @@ class SemanticChunker:
 
         return chunks, orphans
 
-    def create_chunks(self, text_content: str):
-        paragrahs = [p.strip() for p in text_content.split("\n") if len(p.strip().split()) > 10]
+    def create_chunks(self, text_content: str) -> list[str]:
+        paragrahs = [p.strip() for p in text_content.split("\n") if len(p.strip().split()) > PARAGRAHS_SPLIT]
 
         if not paragrahs:
             return []
