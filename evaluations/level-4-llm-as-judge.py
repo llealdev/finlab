@@ -34,7 +34,7 @@ Key Concerns: {key_concerns}
 Recommendation: {recommendation}
 
 Evaluate this fundamental analysis based on:
-1. Does the investment grade seem reasonable? 
+1. Does the investment grade seem reasonable?
 2. Are the key strengths actually strengths for this company?
 3. Are the key concerns relevant and important?
 4. Is the recommendation logical given the analysis?
