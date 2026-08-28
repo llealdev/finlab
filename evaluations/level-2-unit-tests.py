@@ -1,5 +1,5 @@
-import os
 import json
+import os
 
 import requests
 from dotenv import load_dotenv
@@ -17,9 +17,7 @@ def load_test_case(filename: str) -> str:
 def test_agent_endpoint_apple():
     test_case = load_test_case("apple_test.json")
 
-    response = requests.post(
-        f"{API_BASE_URL}/agent", json={"query": test_case["query"], "limit": 3}
-    )
+    response = requests.post(f"{API_BASE_URL}/agent", json={"query": test_case["query"], "limit": 3})
 
     assert response.status_code == 200
     data = response.json()
@@ -33,9 +31,7 @@ def test_agent_endpoint_apple():
 def test_agent_endpoint_ibm():
     test_case = load_test_case("ibm_test.json")
 
-    response = requests.post(
-        f"{API_BASE_URL}/agent", json={"query": test_case["query"], "limit": 3}
-    )
+    response = requests.post(f"{API_BASE_URL}/agent", json={"query": test_case["query"], "limit": 3})
 
     if response.status_code != 200:
         print(f"\nError response: {response.json()}")
@@ -48,9 +44,7 @@ def test_agent_endpoint_ibm():
 def test_agent_endpoint_no_company():
     test_case = load_test_case("no_company_test.json")
 
-    response = requests.post(
-        f"{API_BASE_URL}/agent", json={"query": test_case["query"], "limit": 3}
-    )
+    response = requests.post(f"{API_BASE_URL}/agent", json={"query": test_case["query"], "limit": 3})
 
     assert response.status_code == 400
 
@@ -58,9 +52,7 @@ def test_agent_endpoint_no_company():
 def test_agent_endpoint_natural_language():
     test_case = load_test_case("natural_language_test.json")
 
-    response = requests.post(
-        f"{API_BASE_URL}/agent", json={"query": test_case["query"], "limit": 3}
-    )
+    response = requests.post(f"{API_BASE_URL}/agent", json={"query": test_case["query"], "limit": 3})
 
     if response.status_code != 200:
         print(f"\nError response: {response.json()}")

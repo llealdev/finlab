@@ -1,7 +1,7 @@
 import os
 
-from qdrant_client import QdrantClient, models
 from dotenv import load_dotenv
+from qdrant_client import QdrantClient, models
 
 load_dotenv()
 

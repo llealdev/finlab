@@ -1,10 +1,11 @@
 import os
 import uuid
-from fastembed import TextEmbedding, SparseTextEmbedding, LateInteractionTextEmbedding
-from qdrant_client import QdrantClient, models
-from utils.simple_chunker import SimpleChunker
-from utils.news_client import NewsClint
+
 from dotenv import load_dotenv
+from fastembed import LateInteractionTextEmbedding, SparseTextEmbedding, TextEmbedding
+from qdrant_client import QdrantClient, models
+from utils.news_client import NewsClint
+from utils.simple_chunker import SimpleChunker
 
 load_dotenv()
 

@@ -1,5 +1,5 @@
-from fastapi import APIRouter
 from config.settings import settings
+from fastapi import APIRouter
 from models.search import SearchRequest, SearchResponse
 from services.search import SearchService
 

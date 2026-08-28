@@ -1,5 +1,5 @@
-from fastembed import TextEmbedding, SparseTextEmbedding, LateInteractionTextEmbedding
 from config.settings import settings
+from fastembed import LateInteractionTextEmbedding, SparseTextEmbedding, TextEmbedding
 
 
 class EmbeddingService:

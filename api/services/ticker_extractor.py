@@ -1,15 +1,13 @@
 import instructor
-from openai import OpenAI
 from config.company_mappings import COMPANY_TICKER_MAPPINGS, TICKER_EXTRACTION_PROMPT
 from config.settings import settings
 from models.ticker_extractor import TickerResult
+from openai import OpenAI
 
 
 class TickerExtractor:
     def __init__(self):
-        client = OpenAI(
-            base_url=settings.base_url_api_llm, api_key=settings.llm_api_key
-        )
+        client = OpenAI(base_url=settings.base_url_api_llm, api_key=settings.llm_api_key)
         self.client = instructor.from_openai(client, mode=instructor.Mode.JSON)
         self.mappings = COMPANY_TICKER_MAPPINGS
 

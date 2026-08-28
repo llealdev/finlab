@@ -1,6 +1,7 @@
-from typing import List, Dict
-import yfinance as yf
+from typing import Dict, List
+
 import trafilatura
+import yfinance as yf
 
 
 class NewsClint:

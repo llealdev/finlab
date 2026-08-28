@@ -1,7 +1,9 @@
-from qdrant_client import QdrantClient, models
+from typing import Any, Dict, Optional
+
 from models.search import SearchResponse, SearchResult
+from qdrant_client import QdrantClient, models
+
 from services.embeddings import EmbeddingService
-from typing import Optional, Dict, Any
 
 
 class SearchService:
@@ -22,12 +24,8 @@ class SearchService:
 
         return {"must": must_conditions}
 
-    def search(
-        self, query: str, limit: int = 3, filter: Optional[Dict[str, Any]] = None
-    ):
-        query_dense, query_sparse, query_colbert = self.embedding_service.embe_query(
-            query
-        )
+    def search(self, query: str, limit: int = 3, filter: Optional[Dict[str, Any]] = None):
+        query_dense, query_sparse, query_colbert = self.embedding_service.embe_query(query)
 
         query_filter = self._build_qdrant_filter(filters=filter)
 

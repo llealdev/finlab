@@ -1,9 +1,9 @@
-import os
 import json
+import os
 
 import requests
 from dotenv import load_dotenv
-from langfuse import observe, get_client, propagate_attributes
+from langfuse import get_client, observe, propagate_attributes
 
 load_dotenv()
 
@@ -17,9 +17,7 @@ def load_test_case(filename: str) -> str:
 
 @observe()
 def call_agent_endpoint(query: str, limit: int = 3):
-    response = requests.post(
-        f"{API_BASE_URL}/agent", json={"query": query, "limit": limit}
-    )
+    response = requests.post(f"{API_BASE_URL}/agent", json={"query": query, "limit": limit})
 
     langfuse = get_client()
     langfuse.update_current_span(
@@ -67,9 +65,7 @@ def test_agent_endpoint_apple():
 def test_agent_endpoint_ibm():
     langfuse = get_client()
 
-    with propagate_attributes(
-        tags=["evaluation", "integration_test", "ibm", "llm_fallback"]
-    ):
+    with propagate_attributes(tags=["evaluation", "integration_test", "ibm", "llm_fallback"]):
         test_case = load_test_case("ibm_test.json")
 
         response = call_agent_endpoint(query=test_case["query"])
@@ -123,9 +119,7 @@ def test_agent_endpoint_no_company():
 def test_agent_endpoint_natural_language():
     langfuse = get_client()
 
-    with propagate_attributes(
-        tags=["evaluation", "integration_test", "ibm", "natural_language"]
-    ):
+    with propagate_attributes(tags=["evaluation", "integration_test", "ibm", "natural_language"]):
         test_case = load_test_case("natural_language_test.json")
 
         response = call_agent_endpoint(query=test_case["query"])

@@ -1,16 +1,14 @@
-import instructor
 import json
 import os
 
-from openai import OpenAI
+import instructor
 from dotenv import load_dotenv
+from openai import OpenAI
 from pydantic import BaseModel, Field
 
 load_dotenv()
 
-client = OpenAI(
-    base_url="https://opencode.ai/zen/v1/", api_key=os.getenv("LLM_API_KEY")
-)
+client = OpenAI(base_url="https://opencode.ai/zen/v1/", api_key=os.getenv("LLM_API_KEY"))
 client = instructor.from_openai(client, mode=instructor.Mode.JSON)
 
 
@@ -74,33 +72,25 @@ def extract_ticker(query: str) -> str | None:
 def test_static_mapping_apple():
     test_case = load_test_case("apple_test.json")
     results = extract_ticker(test_case["query"])
-    assert results == test_case["expected_ticker"], (
-        f"Expected {test_case['expected_ticker']}, got {results}"
-    )
+    assert results == test_case["expected_ticker"], f"Expected {test_case['expected_ticker']}, got {results}"
 
 
 def test_llm_fallback_ibm():
     test_case = load_test_case("ibm_test.json")
     results = extract_ticker(test_case["query"])
-    assert results == test_case["expected_ticker"], (
-        f"Expected {test_case['expected_ticker']}, got {results}"
-    )
+    assert results == test_case["expected_ticker"], f"Expected {test_case['expected_ticker']}, got {results}"
 
 
 def test_no_company_mentioned():
     test_case = load_test_case("no_company_test.json")
     results = extract_ticker(test_case["query"])
-    assert results == test_case["expected_ticker"], (
-        f"Expected {test_case['expected_ticker']}, got {results}"
-    )
+    assert results == test_case["expected_ticker"], f"Expected {test_case['expected_ticker']}, got {results}"
 
 
 def test_natural_language_query():
     test_case = load_test_case("natural_language_test.json")
     results = extract_ticker(test_case["query"])
-    assert results == test_case["expected_ticker"], (
-        f"Expected {test_case['expected_ticker']}, got {results}"
-    )
+    assert results == test_case["expected_ticker"], f"Expected {test_case['expected_ticker']}, got {results}"
 
 
 if __name__ == "__main__":

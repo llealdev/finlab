@@ -1,17 +1,14 @@
 import os
 
 from dotenv import load_dotenv
-
-from openai import OpenAI
-from guardrails import Guard
-
 from guardrails.hub import ProfanityFree
+from openai import OpenAI
+
+from guardrails import Guard
 
 load_dotenv()
 
-client = OpenAI(
-    base_url="https://opencode.ai/zen/v1/", api_key=os.getenv("LLM_API_KEY")
-)
+client = OpenAI(base_url="https://opencode.ai/zen/v1/", api_key=os.getenv("LLM_API_KEY"))
 
 
 def zen_wrapper(*, messages, **kwargs) -> str:

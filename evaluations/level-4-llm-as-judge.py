@@ -1,20 +1,17 @@
 import os
 from typing import Literal
 
+import instructor
 from dotenv import load_dotenv
 from langfuse import Langfuse
-import instructor
 from openai import OpenAI
 from pydantic import BaseModel, Field
-
 
 load_dotenv()
 
 langfuse = Langfuse()
 
-client = OpenAI(
-    base_url="https://opencode.ai/zen/v1/", api_key=os.getenv("LLM_API_KEY")
-)
+client = OpenAI(base_url="https://opencode.ai/zen/v1/", api_key=os.getenv("LLM_API_KEY"))
 client = instructor.from_openai(client, mode=instructor.Mode.JSON)
 
 
@@ -118,9 +115,7 @@ def run_llm_as_judge_evaluations():
         if not trace_data.output:
             continue
 
-        fundamental_eval = evaluate_fundamental_analysis(
-            {"input": trace_data.input, "output": trace_data.output}
-        )
+        fundamental_eval = evaluate_fundamental_analysis({"input": trace_data.input, "output": trace_data.output})
 
         langfuse.create_score(
             trace_id=trace.id,
@@ -130,9 +125,7 @@ def run_llm_as_judge_evaluations():
             data_type="NUMERIC",
         )
 
-        recommendation_eval = evaluate_recommendation_quality(
-            {"output": trace_data.output}
-        )
+        recommendation_eval = evaluate_recommendation_quality({"output": trace_data.output})
 
         langfuse.create_score(
             trace_id=trace.id,
@@ -142,9 +135,7 @@ def run_llm_as_judge_evaluations():
             data_type="NUMERIC",
         )
 
-        print(
-            f"{trace.name}: fundamental={fundamental_eval.score:.2f}, recommendation={recommendation_eval.score:.2f}"
-        )
+        print(f"{trace.name}: fundamental={fundamental_eval.score:.2f}, recommendation={recommendation_eval.score:.2f}")
 
     langfuse.flush()
 

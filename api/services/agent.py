@@ -1,14 +1,14 @@
 import asyncio
-from openai import AsyncOpenAI
+
 import instructor
 from config.prompts import (
-    FUNDAMENTAL_QUERIES,
-    MOMENTUM_QUERIES,
-    SENTIMENT_QUERY_TEMPLATE,
-    FUNDAMENTAL_PROMPT,
-    MOMENTUM_PROMPT,
-    SENTIMENT_PROMPT,
     AGGREGATION_PROMPT,
+    FUNDAMENTAL_PROMPT,
+    FUNDAMENTAL_QUERIES,
+    MOMENTUM_PROMPT,
+    MOMENTUM_QUERIES,
+    SENTIMENT_PROMPT,
+    SENTIMENT_QUERY_TEMPLATE,
 )
 from config.settings import settings
 from models.agent import (
@@ -18,6 +18,7 @@ from models.agent import (
     MomentumAnalysis,
     SentimentAnalysis,
 )
+from openai import AsyncOpenAI
 
 from services.search import SearchService
 from services.ticker_extractor import TickerExtractor
@@ -26,18 +27,14 @@ from services.ticker_extractor import TickerExtractor
 class AgentServices:
     def __init__(self, search_service: SearchService):
         self.search_service = search_service
-        client = AsyncOpenAI(
-            base_url=settings.base_url_api_llm, api_key=settings.llm_api_key
-        )
+        client = AsyncOpenAI(base_url=settings.base_url_api_llm, api_key=settings.llm_api_key)
         self.client = instructor.from_openai(client=client, model=instructor.Mode.JSON)
         self.ticker_extractor = TickerExtractor()
 
     def _run_queries(self, queries: list[str], limit: int, filter: dict = None):
         all_results = []
         for query in queries:
-            search_result = self.search_service.search(
-                query=query, limit=limit, filter=filter
-            )
+            search_result = self.search_service.search(query=query, limit=limit, filter=filter)
             all_results.extend([result.text for result in search_result.results])
         return "\n\n".join(all_results)
 
@@ -53,17 +50,13 @@ class AgentServices:
         filter = {"ticker": ticker, "form_type": "10-K"}
         context = self._run_queries(FUNDAMENTAL_QUERIES, limit=limit, filter=filter)
         prompt = FUNDAMENTAL_PROMPT.format(context=context)
-        return await self._generate_completion(
-            prompt=prompt, response_model=FundamentalAnalysis
-        )
+        return await self._generate_completion(prompt=prompt, response_model=FundamentalAnalysis)
 
     async def _analyze_momentum(self, ticker: str, limit: int):
         filter = {"ticker": ticker, "form_type": "10-Q"}
         context = self._run_queries(MOMENTUM_QUERIES, limit=limit, filter=filter)
         prompt = MOMENTUM_PROMPT.format(context=context)
-        return await self._generate_completion(
-            prompt=prompt, response_model=MomentumAnalysis
-        )
+        return await self._generate_completion(prompt=prompt, response_model=MomentumAnalysis)
 
     async def _analyze_sentiment(self, ticker: str, limit: int):
         filter = {"ticker": ticker, "source": "yahoo_finance"}
@@ -71,9 +64,7 @@ class AgentServices:
         results = self.search_service.search(query=query, limit=limit, filter=filter)
         context = "\n\n".join([result.text for result in results.results])
         prompt = SENTIMENT_PROMPT.format(context=context)
-        return await self._generate_completion(
-            prompt=prompt, response_model=SentimentAnalysis
-        )
+        return await self._generate_completion(prompt=prompt, response_model=SentimentAnalysis)
 
     async def analyze(self, query: str, limit: int = 3):
         ticker = self.ticker_extractor.extract_ticker(query=query)
@@ -97,9 +88,7 @@ class AgentServices:
             sentiment=sentiment_analysis.model_dump_json(indent=2),
         )
 
-        final_recomendation = await self._generate_completion(
-            aggregation_prompt, FinalRecommendation
-        )
+        final_recomendation = await self._generate_completion(aggregation_prompt, FinalRecommendation)
 
         return AgentResponse(
             query=query,

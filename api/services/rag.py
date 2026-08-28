@@ -1,16 +1,15 @@
-from openai import OpenAI
 from config.prompts import RAG_PROMPT
 from config.settings import settings
 from models.rag import RAGResponse
+from openai import OpenAI
+
 from services.search import SearchService
 
 
 class RAGService:
     def __init__(self, search_service: SearchService):
         self.search_service = search_service
-        self.client = OpenAI(
-            base_url=settings.base_url_api_llm, api_key=settings.llm_api_key
-        )
+        self.client = OpenAI(base_url=settings.base_url_api_llm, api_key=settings.llm_api_key)
 
     def generate_answer(self, query: str, limit: int = 3):
         search_results = self.search_service.search(query, limit)

@@ -1,17 +1,14 @@
 import os
 
 from dotenv import load_dotenv
-
+from guardrails.validators import FailResult, PassResult, register_validator
 from openai import OpenAI
-from guardrails import Guard
 
-from guardrails.validators import register_validator, PassResult, FailResult
+from guardrails import Guard
 
 load_dotenv()
 
-client = OpenAI(
-    base_url="https://opencode.ai/zen/v1/", api_key=os.getenv("LLM_API_KEY")
-)
+client = OpenAI(base_url="https://opencode.ai/zen/v1/", api_key=os.getenv("LLM_API_KEY"))
 
 
 def zen_wrapper(*, messages, **kwargs) -> str:
@@ -29,8 +26,7 @@ def simple_topic_check(value, metadata):
 
     if any(keyword in value.lower() for keyword in financial_keyword):
         return PassResult()
-    else:
-        return FailResult(errorMessage="Query is not about financial topics")
+    return FailResult(errorMessage="Query is not about financial topics")
 
 
 guard = Guard().use(simple_topic_check(on_fail="exception"))

@@ -26,9 +26,7 @@ qdrant.create_collection(
         "colbert": models.VectorParams(
             size=128,
             distance=models.Distance.COSINE,
-            multivector_config=models.MultiVectorConfig(
-                comparator=models.MultiVectorComparator.MAX_SIM
-            ),
+            multivector_config=models.MultiVectorConfig(comparator=models.MultiVectorComparator.MAX_SIM),
         ),
     },
     sparse_vectors_config={"sparse": models.SparseVectorParams()},

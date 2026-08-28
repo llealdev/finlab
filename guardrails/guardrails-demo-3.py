@@ -1,17 +1,14 @@
 import os
 
 from dotenv import load_dotenv
-
+from guardrails.validators import FailResult, PassResult, register_validator
 from openai import OpenAI
-from guardrails import Guard
 
-from guardrails.validators import register_validator, PassResult, FailResult
+from guardrails import Guard
 
 load_dotenv()
 
-client = OpenAI(
-    base_url="https://opencode.ai/zen/v1/", api_key=os.getenv("LLM_API_KEY")
-)
+client = OpenAI(base_url="https://opencode.ai/zen/v1/", api_key=os.getenv("LLM_API_KEY"))
 
 
 def zen_wrapper(*, messages, **kwargs) -> str:
@@ -35,8 +32,7 @@ def zen_topic_check(value, metadata):
 
     if "YES" in response.choices[0].message.content.upper():
         return PassResult()
-    else:
-        return FailResult(errorMessage="Not about finance")
+    return FailResult(errorMessage="Not about finance")
 
 
 guard = Guard().use(zen_topic_check(on_fail="exception"))

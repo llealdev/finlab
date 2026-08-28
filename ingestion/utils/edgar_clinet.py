@@ -1,5 +1,6 @@
-from typing import Dict
-from edgar import set_identity, Company
+from typing import Any, Dict
+
+from edgar import Company, set_identity
 
 
 class EdgarClient:
@@ -9,7 +10,7 @@ class EdgarClient:
     def __init__(self, email: str):
         set_identity(email)
 
-    def fetch_filing_data(self, ticker: str, form_type: str) -> Dict[str, any]:
+    def fetch_filing_data(self, ticker: str, form_type: str) -> Dict[str, Any]:
         company = Company(ticker)
         filing = company.get_filings(form=form_type).latest()
 

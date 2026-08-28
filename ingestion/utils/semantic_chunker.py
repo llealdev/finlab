@@ -66,21 +66,15 @@ class SemanticChunker:
         return chunks, orphans
 
     def create_chunks(self, text_content: str):
-        paragrahs = [
-            p.strip() for p in text_content.split("\n") if len(p.strip().split()) > 10
-        ]
+        paragrahs = [p.strip() for p in text_content.split("\n") if len(p.strip().split()) > 10]
 
         if not paragrahs:
             return []
 
-        final_chunks, orphans = self._cluster_and_process(
-            paragrahs, self.min_cluster_size
-        )
+        final_chunks, orphans = self._cluster_and_process(paragrahs, self.min_cluster_size)
 
         if len(orphans) > 1:
-            orphan_chunks, single_orphans = self._cluster_and_process(
-                orphans, self.orphan_cluster_size
-            )
+            orphan_chunks, single_orphans = self._cluster_and_process(orphans, self.orphan_cluster_size)
             final_chunks.extend(orphan_chunks)
             final_chunks.extend(single_orphans)
 
