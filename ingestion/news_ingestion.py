@@ -26,10 +26,11 @@ news_data = new_client.fetch_news("IBM", max_stories=10)
 chunker = SimpleChunker(max_tokens=MAX_TOKENS)
 
 all_chunks = []
+
 for article in news_data:
     chunks = chunker.create_chunker(article["text"])
-    for chunk in chunks:
-        all_chunks.append({"text": chunk, "metadata": article["metadata"]})
+    all_chunks.extend({"text": chunk, "metadata": article["metadata"]} for chunk in chunks)
+
 
 dense_model = TextEmbedding(DENSE_MODEL)
 sparse_model = SparseTextEmbedding(SPARSE_MODEL)

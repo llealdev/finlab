@@ -33,8 +33,7 @@ chunker = SemanticChunker(max_tokens=MAX_TOKENS)
 all_chunks = []
 for data, text in [(data_10k, text_10k), (data_10q, text_10q)]:
     chunks = chunker.create_chunks(text)
-    for chunk in chunks:
-        all_chunks.append({"text": chunk, "metadata": data["metadata"]})
+    all_chunks.extend({"text": chunk, "metadata": data["metadata"]} for chunk in chunks)
 
 dense_model = TextEmbedding(model_name=DENSE_MODEL)
 sparse_model = SparseTextEmbedding(model_name=SPARSE_MODEL)
