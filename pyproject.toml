@@ -32,7 +32,7 @@ dev = [
 
 [tool.ruff]
 line-length = 120
-extend-exclude = ['notebooks']
+extend-exclude = ['notebooks', 'evaluations']
 
 [tool.ruff.lint]
 preview = true
