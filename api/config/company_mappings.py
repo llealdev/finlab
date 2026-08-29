@@ -11,7 +11,8 @@ COMPANY_TICKER_MAPPINGS = {
     "nvidia": "NVDA",
 }
 
-TICKER_EXTRACTION_PROMPT = """You are a stock ticker symbol extractor. Given a user message, extract the stock ticker symbol for any publicly traded company mentioned.
+TICKER_EXTRACTION_PROMPT = """You are a stock ticker symbol extractor. Given a user message, extract the stock ticker
+symbol for any publicly traded company mentioned.
 
 Rules:
 - Return ONLY the ticker symbol (e.g., AAPL, TSLA, MSFT)
