@@ -1,0 +1,28 @@
+# Virtual environments (5.4 GB — never send to the daemon)
+.venv/
+**/__pycache__/
+*.py[oc]
+
+# Secrets — note Docker patterns are path-based (unlike .gitignore),
+# so a bare `.env` would only match the context root, not api/.env
+**/.env
+**/.env.*
+!**/.env.example
+
+# VCS and tooling caches
+.git/
+.gitignore
+.mypy_cache/
+.pytest_cache/
+.ruff_cache/
+
+# Not used by the API service
+ingestion/
+evaluations/
+guardrails/
+notebooks/
+Dockerfile
+.dockerignore
+
+# NOTE: pyproject.toml, uv.lock and README.md are deliberately NOT ignored —
+# the builder stage needs them for `uv sync --frozen`.
